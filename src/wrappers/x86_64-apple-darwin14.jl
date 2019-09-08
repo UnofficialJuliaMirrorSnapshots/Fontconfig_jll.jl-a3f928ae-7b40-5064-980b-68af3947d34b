@@ -7,8 +7,6 @@ using Zlib_jll
 using Libuuid_jll
 using Expat_jll
 ## Global variables
-const PATH_list = String[]
-const LIBPATH_list = String[]
 PATH = ""
 LIBPATH = ""
 LIBPATH_env = "DYLD_FALLBACK_LIBRARY_PATH"
@@ -35,17 +33,9 @@ function __init__()
 
     # Initialize PATH and LIBPATH environment variable listings
     global PATH_list, LIBPATH_list
+    append!.(Ref(PATH_list), (FreeType2_jll.PATH_list, Bzip2_jll.PATH_list, Zlib_jll.PATH_list, Libuuid_jll.PATH_list, Expat_jll.PATH_list,))
+    append!.(Ref(LIBPATH_list), (FreeType2_jll.LIBPATH_list, Bzip2_jll.LIBPATH_list, Zlib_jll.LIBPATH_list, Libuuid_jll.LIBPATH_list, Expat_jll.LIBPATH_list,))
 
-    append!(PATH_list, FreeType2_jll.PATH_list)
-    append!(LIBPATH_list, FreeType2_jll.LIBPATH_list)
-    append!(PATH_list, Bzip2_jll.PATH_list)
-    append!(LIBPATH_list, Bzip2_jll.LIBPATH_list)
-    append!(PATH_list, Zlib_jll.PATH_list)
-    append!(LIBPATH_list, Zlib_jll.LIBPATH_list)
-    append!(PATH_list, Libuuid_jll.PATH_list)
-    append!(LIBPATH_list, Libuuid_jll.LIBPATH_list)
-    append!(PATH_list, Expat_jll.PATH_list)
-    append!(LIBPATH_list, Expat_jll.LIBPATH_list)
     global libfontconfig_path = abspath(joinpath(artifact"Fontconfig", libfontconfig_splitpath...))
 
     # Manually `dlopen()` this right now so that future invocations
